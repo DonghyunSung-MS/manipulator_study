@@ -1,0 +1,12 @@
+<launch>
+  <node name="vrepRosPosControl2" pkg="manipulator_study" type="set_target_multiple" output="screen">
+    <param name="j1" value="0.0" />   <!-- joint 1 limit : -166~166 deg -->
+    <param name="j2" value="30.0" />  <!-- joint 2 limit : -101~101 deg -->
+    <param name="j3" value="0.0" />   <!-- joint 3 limit : -166~166 deg -->
+    <param name="j4" value="-40.0" /> <!-- joint 4 limit : -176~-4 deg -->
+    <param name="j5" value="0.0" />   <!-- joint 5 limit : -166~166 deg -->
+    <param name="j6" value="80.0" />  <!-- joint 6 limit : -1~215 deg -->
+    <param name="j7" value="45.0" />  <!-- joint 7 limit : -166~166 deg -->
+    <param name="exec_time" value="1.0" />
+  </node>
+</launch>
