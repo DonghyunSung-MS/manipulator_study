@@ -1,4 +1,4 @@
-#ifdef SIMULATION_POSTIONCONTROLLER_H
+#ifndef SIMULATION_POSTIONCONTROLLER_H
 #define SIMULATION_POSTIONCONTROLLER_H
 
 #include <ros/ros.h>
@@ -37,7 +37,7 @@ float64 z
 #define deg2rad(deg) ((deg) * PI / 180.0)
 #define rad2deg(rad) ((rad) / PI * 180.0)
 
-const std::string JOINT_NAME[TOTALDOF]={"Franka_joint1","Franka_joint2","Franka_joint3","Franka_joint4"
+const std::string JOINT_NAME[TOTAL_DOF]={"Franka_joint1","Franka_joint2","Franka_joint3","Franka_joint4",
                                         "Franka_joint5","Franka_joint6","Franka_joint7"};
 class posController
 {
@@ -50,13 +50,13 @@ public:
   //-------------- Callback Functions for subscribing topics --------------
 
   //joint Callback function
-  void jointStateCallback(sensor_msgs::JointStateConstPtr &msg);
+  void jointStateCallback(const sensor_msgs::JointStateConstPtr& msg);
   //simulation state callback 0: stopped 1:running 2: paused
-  void simStateCallback(std_msgs::Int32ConstPtr &msg);
+  void simStateCallback(const std_msgs::Int32ConstPtr& msg);
   //simulation time callback
-  void simTimeCallback(std_msgs::Float32ConstPtr &msg);
+  void simTimeCallback(const std_msgs::Float32ConstPtr& msg);
   //simulation step done callback
-  void simStepDoneCallback(std_msgs::BoolConstPtr &msg);
+  void simStepDoneCallback(const std_msgs::BoolConstPtr& msg);
 
   //-------------- vrep interface functions --------------
 
@@ -73,6 +73,7 @@ public:
   void setExecTime(float t);
   void compute();
   void wait();
+  void getTarget(ros::NodeHandle nh_);
 
 
 private:
@@ -127,8 +128,8 @@ static double cubicSpline(double time,
                           double time_0,
                           double time_f,
                           double x_0,
-                          dobule x_f,
-                          double x_dot_0
+                          double x_f,
+                          double x_dot_0,
                           double x_dot_f)
 //a0 + a1*t + a2*t^2 + a3*t^2 = u(t) 4 unknown 4 eqn(4 boundary condition)
 {
@@ -150,16 +151,18 @@ static double cubicSpline(double time,
   }
   return x_t;
 }
+#include <string>
+#include <sstream>
+using namespace std;
 
-#endif
+template<typename T>
+string ToString(T t)
+{
 
+  stringstream ss;
 
+  ss << t;
 
-
-
-
-
-
-
-
+  return ss.str();
 }
+#endif
