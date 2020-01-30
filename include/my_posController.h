@@ -6,8 +6,8 @@
 #include <std_msgs/Float32.h>
 #include <std_msgs/Bool.h>
 #include <std_msgs/Int32.h>
-#include <sensor_msgs/JointState.h>
 #include <cmath>
+#include <sensor_msgs/JointState.h>
 /*
 std_msgs/Header header
 string[] name
@@ -43,14 +43,14 @@ class posController
 {
 public:
   //contructor
-  posController(ros::NodeHandle nh,double hz_);
+  posController(ros::NodeHandle nh_,double hz_);
   //destructor
   ~posController();
 
   //-------------- Callback Functions for subscribing topics --------------
 
   //joint Callback function
-  void jointCallback(sensor_msgs::JointStateConstPtr &msg);
+  void jointStateCallback(sensor_msgs::JointStateConstPtr &msg);
   //simulation state callback 0: stopped 1:running 2: paused
   void simStateCallback(std_msgs::Int32ConstPtr &msg);
   //simulation time callback
@@ -87,9 +87,9 @@ private:
   ros::Publisher sim_stop_pub_;
 
   ros::Publisher sim_enable_sync_mode_pub_;
-  ros::Publisher trigger_next_step_pub;
+  ros::Publisher trigger_next_step_pub_;
 
-  //-------------- Publisher Variables --------------
+  //-------------- Subscriber Variables --------------
 
   ros::Subscriber joint_state_sub_;
   ros::Subscriber sim_step_done_sub_;
