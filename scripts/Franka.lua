@@ -13,12 +13,24 @@ function joint_set_msg_callback(msg)
 end
 
 if (sim_call_type==sim.syscb_init) then
-    joint_names={-1,-1,-1,-1,-1,-1,-1}
-    joint_handles = joint_names
+    --efficient code
+    joint_names={}
+    joint_handles = {}
     for i=1,7,1 do
-        joint_names[i]='Franka_joint'..i
+        joint_names[i]=tostring('Franka_joint'..i)
         joint_handles[i]=sim.getObjectHandle('Franka_joint'..i)
     end
+    --inefficient code
+    --[[
+    joint_names = {
+    "Franka_joint1", "Franka_joint2", "Franka_joint3",
+    "Franka_joint4", "Franka_joint5", "Franka_joint6",
+    "Franka_joint7"}
+    joint_handles = {
+    sim.getObjectHandle("Franka_joint1"),sim.getObjectHandle("Franka_joint2"),sim.getObjectHandle("Franka_joint3"),
+    sim.getObjectHandle("Franka_joint4"),sim.getObjectHandle("Franka_joint5"),sim.getObjectHandle("Franka_joint6"),
+    sim.getObjectHandle("Franka_joint7")}
+    ]]--
     number_of_joint = 7
     base = sim.getObjectHandle("Franka_link1")
     joint_pub = simROS.advertise('/Franka/joint_states', 'sensor_msgs/JointState')
@@ -26,7 +38,7 @@ if (sim_call_type==sim.syscb_init) then
     joint_sub = simROS.subscribe('/Franka/joint_set', 'sensor_msgs/JointState', 'joint_set_msg_callback')
 end
 if (sim_call_type==sim.syscb_sensing) then
-    local frame_stamp = simROS.getTime() -- Use ROS Time
+    local frame_stamp = simROS.getTime()
     local position = {}
     local velocity = {}
     local torque = {}
